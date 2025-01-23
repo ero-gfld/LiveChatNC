@@ -1,146 +1,238 @@
 <html>
+  <head>
+    <title>LiveChat</title>
+    <script
+      src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+      integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-<head>
-  <title>LiveChatCCB</title>
-  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"
-    integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdn.vidstack.io/player/theme.css" />
-  <link rel="stylesheet" href="https://cdn.vidstack.io/player/video.css" />
-  <script src="https://cdn.vidstack.io/player" type="module"></script>
-</head>
-
-<body>
-  <div class="absolute top-3 left-3 hidden flex-col items-center z-50" id="author-block">
-    <div class="w-fit">
-      <div class="border-4 rounded-full border-[#57F287] inline-block">
-        <img id="author-img" src="" class="w-full h-full max-w-[70px] max-h-[70px] rounded-full" />
-      </div>
-    </div>
-    <div>
-      <p id="author-username" class="text-center font-medium text-white text-lg max-w-[100px]"
-        style="text-shadow: #57F287 1px 0 10px;"></p>
-    </div>
-  </div>
-
-  <div class="absolute w-screen h-screen flex items-end justify-center top-0 left-0 z-20 px-5 pb-5">
-    <div>
-      <p id="message-text" class="text-white text-5xl font-medium text-center" style="text-shadow:white 1px 0 10px;">
-      </p>
-    </div>
-  </div>
-
-  <div class="absolute max-w-screen max-h-screen h-full w-full flex items-center justify-center top-0 left-0">
-    <div id="message-block">
-    </div>
-  </div>
-
-  <script>
-    function generateImg(src, displayFull) {
-      return '<img id="message-img" ' + (displayFull ? 'class="aspect-auto w-full h-full max-w-[100vw] max-h-[100vh]"' : '') + ' src="' + src + '" />';
-    }
-
-    function generateAudioVideo(src, displayFull) {
-      return '<media-player id="message-player" ' + (displayFull ? "class='aspect-auto w-[100vw] h-[100vh]'" : '') + ' src="' + src + '" autoplay controls>' +
-        '<media-provider></media-provider>' +
-        '<media-audio-layout></media-audio-layout>' +
-        '<media-video-layout></media-video-layout>' +
-        '</media-player>';
-    }
-
-    function displayAuthor(authorUsername, authorPictureURL) {
-      var elementBlock = document.getElementById('author-block');
-      var elementUsername = document.getElementById('author-username');
-      var elementImg = document.getElementById('author-img');
-
-      elementBlock.style.display = 'none';
-
-      elementUsername.innerHTML = authorUsername;
-      // Display default image if user doesn't have an image
-      elementImg.src = authorPictureURL || 'https://archive.org/download/discordprofilepictures/discordblue.png';
-
-      if (authorUsername || authorPictureURL) {
-        elementBlock.style.display = 'flex';
+  <body>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        /* background: linear-gradient(45deg, #78b1f3, #4264af); */
+        color: white;
       }
-    }
 
-    function displayText(text) {
-      var element = document.getElementById('message-text');
-      element.style.display = 'none';
+      .message {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        /* Changed from 100% to 100vh */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 2vh;
+        box-sizing: border-box;
 
-      if (text) {
-        element.innerHTML = text;
-        element.style.display = 'block';
+        /* add a grow-in animation */
+        animation: grow-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation-fill-mode: forwards;
       }
-    }
 
-    function displayContent(data) {
-      var element = document.getElementById('message-block');
-
-      element.innerHTML = '';
-
-      if (data.mediaContentType) {
-        if (data.mediaContentType.indexOf('image') === 0) {
-          element.innerHTML = generateImg(data.media || data.url, data.displayFull);
-        } else {
-          element.innerHTML = generateAudioVideo(data.media || data.url, data.displayFull);
+      @keyframes grow-in {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
         }
       }
-    }
 
-    var timeout;
-    function displayMessage(message) {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-      if (message.duration) {
-        timeout = setTimeout(() => {
-          displayMessage({})
-        }, (message.duration * 1000) + 100);
+      .message-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 2;
+        padding: 2vh;
       }
 
-      var elementMessage = document.getElementById('message-block');
-      var elementBlock = document.getElementById('author-block');
-      var elementText = document.getElementById('message-text');
-      elementMessage.innerHTML = '';
-      elementBlock.style.display = 'none';
-      elementText.style.display = 'none';
+      .avatar {
+        width: 4vw;
+        height: 4vw;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        margin-bottom: 1vh;
+        border: 0.5vh solid #00ff00;
+        box-shadow: 0 0 10px #00ff00;
+        z-index: 2;
+      }
 
-      displayAuthor(message.author, message.authorImage);
+      .username {
+        font-family: 'Cooper Black', 'Comic Sans MS', cursive, sans-serif;
+        font-style: italic;
+        font-size: 5vh;
+        color: white;
+        text-shadow:
+          0 0 1vw #00ff00,
+          0 0 2vw #00ff00;
+      }
 
-      var data = JSON.parse(message.content || '{}');
+      .content {
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-      displayText(data.text);
-      displayContent(data);
-    }
+      .content p {
+        z-index: 2;
+        width: 100%;
+        text-align: center;
+        margin-top: auto;
+        margin-bottom: 2vh;
 
-    document.addEventListener("DOMContentLoaded", function () {
+        /* Dynamic font sizing based on content length */
+        font-size: min(8vw, calc(15vh / (0.5 + (var(--char-length, 0) / 40))));
+        line-height: 1.2;
+        /*
+    The formula will:
+    - Start with large text for short messages
+    - Gradually decrease font size as message length increases
+    - Keep text within 15% viewport height for optimal viewing
+    - The divisor of 40 can be adjusted to fine-tune the scaling rate
+    */
+
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        color: black;
+        -webkit-text-stroke: 0.15em black;
+        -webkit-text-fill-color: white;
+        paint-order: stroke fill;
+        word-break: break-word;
+
+        /* Enable text wrapping */
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
+        text-wrap: balance;
+      }
+
+      .attachment {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        margin: auto;
+        z-index: 1;
+      }
+
+      video.attachment::-webkit-media-controls {
+        display: none;
+      }
+    </style>
+    <div id="messages"></div>
+  </body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
       var socket = io({
-        'reconnection': true,
-        'reconnectionDelay': 1000,
-        'reconnectionDelayMax': 1000,
-        'reconnectionAttempts': 999
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 1000,
+        reconnectionAttempts: 999,
       });
 
       socket.on('connect', () => {
         //Get query param
         const urlParams = new URLSearchParams(window.location.search);
-        socket.emit("join-room", "messages-" + urlParams.get('guildId'));
+        socket.emit('join-room', 'messages-' + urlParams.get('guildId'));
       });
 
-      socket.on("new-message", function (data) {
-        console.debug(data);
-        displayMessage(data);
+      socket.on('new-message', function (data) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message';
+        messageElement.style.display = 'none';
+
+        var content = JSON.parse(data.content || '{}');
+
+        let attachmentHTML = '';
+        if (content.mediaContentType.startsWith('image/')) {
+          attachmentHTML = `<img class="attachment" src="${content.media}" alt="Image" />`;
+        } else if (content.mediaContentType.startsWith('video/')) {
+          attachmentHTML = `<video class="attachment" src="${content.media}" autoplay playsinline></video>`;
+        } else if (content.mediaContentType.startsWith('audio/')) {
+          attachmentHTML = `<audio class="attachment" src="${content.media}" autoplay></audio>`;
+        }
+
+        messageElement.innerHTML = `
+            <div class="message-header">
+                <img class="avatar" src="${data.authorImage}" />
+                <strong class="username">${data.author}</strong>
+            </div>
+            <div class="content">
+                <p data-content="${content.text}">${content.text ?? ''}</p>
+            </div>
+            ${attachmentHTML}
+        `;
+
+        // Add this new code after creating the message element
+        const paragraph = messageElement.querySelector('.content p');
+        if (paragraph) {
+          // Set custom property based on content length
+          paragraph.style.setProperty('--char-length', content.text?.length);
+        }
+
+        if (messageElement.querySelector('video')) {
+          const videoElement = messageElement.querySelector('video');
+          videoElement.addEventListener('canplay', () => {
+            messageElement.style.display = 'flex';
+          });
+        } else if (messageElement.querySelector('img')) {
+          const imageElement = messageElement.querySelector('img');
+          imageElement.addEventListener('load', () => {
+            messageElement.style.display = 'flex';
+          });
+        } else {
+          messageElement.style.display = 'flex';
+        }
+
+        const messagesContainer = document.getElementById('messages');
+        messagesContainer.innerHTML = '';
+        messagesContainer.appendChild(messageElement);
+
+        let isFinished = false;
+        const finishMessage = () => {
+          if (isFinished) return;
+          messagesContainer.innerHTML = '';
+          isFinished = true;
+        };
+
+        // if the message contains a video, empty the messages container after it has been played
+        if (messageElement.querySelector('video, audio')) {
+          const mediaElement = messageElement.querySelector('video, audio');
+          // Ensure the media can be played before setting the timeout
+          mediaElement.addEventListener('canplaythrough', () => {
+            // Make sure the media is playing
+            mediaElement.play().then(() => {
+              mediaElement.addEventListener('ended', finishMessage);
+            });
+          });
+        }
+
+        setTimeout(finishMessage, data.duration * 1000);
       });
 
-      socket.on("stop", function (data) {
-        console.debug("Media stopped !");
-        clearTimeout(timeout);
-        displayMessage({});
+      socket.on('stop', function (data) {
+        console.debug('Media stopped !');
+        const messagesContainer = document.getElementById('messages');
+        messagesContainer.innerHTML = '';
       });
     });
   </script>
-</body>
-
 </html>
