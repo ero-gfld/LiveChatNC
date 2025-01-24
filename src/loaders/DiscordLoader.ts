@@ -11,15 +11,12 @@ import {
 } from 'discord.js';
 import { aliveCommand } from '../components/discord/aliveCommand';
 import { sendCommand } from '../components/messages/sendCommand';
-import { hideSendCommand } from '../components/messages/hidesendCommand';
 import { loadMessagesWorker } from '../components/messages/messagesWorker';
 import { talkCommand } from '../components/messages/talkCommand';
-import { hideTalkCommand } from '../components/messages/hidetalkCommand';
 import { clientCommand } from '../components/discord/clientCommand';
 import { helpCommand } from '../components/discord/helpCommand';
 import { infoCommand } from '../components/discord/infoCommand';
 import { setDefaultTimeCommand } from '../components/discord/setDefaultTimeCommand';
-import { setDisplayMediaFullCommand } from '../components/discord/setDisplayFullCommand';
 import { setMaxTimeCommand } from '../components/discord/setMaxTimeCommand';
 import { stopCommand } from '../components/messages/stopCommand';
 
@@ -84,15 +81,9 @@ const loadDiscordCommands = async (fastify: FastifyCustomInstance) => {
       helpCommand(),
       infoCommand(),
       setDefaultTimeCommand(),
-      setDisplayMediaFullCommand(),
       setMaxTimeCommand(),
       stopCommand(fastify),
     ];
-    const hideCommands = [hideSendCommand(), hideTalkCommand()];
-
-    if (env.HIDE_COMMANDS_DISABLED !== 'true') {
-      commands.push(...hideCommands);
-    }
 
     global.commandsLoaded = [];
 

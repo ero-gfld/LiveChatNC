@@ -33,17 +33,11 @@ export const frLang: typeof enLang = {
   sendCommandOptionTextDescription: 'Texte à afficher',
   sendCommandOptionMedia: 'média',
   sendCommandOptionMediaDescription: 'Média à afficher',
+  sendCommandOptionDuration: 'durée',
+  sendCommandOptionDurationDescription: "Durée d'affichage (En secondes)",
+  sendCommandOptionHide: 'cacher',
+  sendCommandOptionHideDescription: 'Cacher le contenu',
   sendCommandAnswer: 'Contenu reçu ! Il sera bientôt joué !',
-
-  hideSendCommand: 'cmsg',
-  hideSendCommandDescription: 'Envoyer du contenu sur le stream (mais caché 😈)',
-  hideSendCommandOptionURL: 'lien',
-  hideSendCommandOptionURLDescription: 'Lien du contenu sur le stream',
-  hideSendCommandOptionText: 'texte',
-  hideSendCommandOptionTextDescription: 'Texte à afficher',
-  hideSendCommandOptionMedia: 'média',
-  hideSendCommandOptionMediaDescription: 'Média à afficher',
-  hideSendCommandAnswer: 'Contenu reçu ! Il sera bientôt joué !',
 
   talkCommand: 'dire',
   talkCommandDescription: 'Demandez à un bot de dire quelque chose',
@@ -51,15 +45,9 @@ export const frLang: typeof enLang = {
   talkCommandOptionTextDescription: 'Texte à afficher',
   talkCommandOptionVoice: 'dire',
   talkCommandOptionVoiceDescription: 'Texte à dire',
+  talkCommandOptionHide: 'cacher',
+  talkCommandOptionHideDescription: 'Cacher le contenu',
   talkCommandAnswer: 'Contenu reçu ! Il sera bientôt joué !',
-
-  hideTalkCommand: 'cdire',
-  hideTalkCommandDescription: 'Demandez à un bot de dire quelque chose (mais caché 😈)',
-  hideTalkCommandOptionText: 'texte',
-  hideTalkCommandOptionTextDescription: 'Texte à afficher',
-  hideTalkCommandOptionVoice: 'dire',
-  hideTalkCommandOptionVoiceDescription: 'Texte à dire',
-  hideTalkCommandAnswer: 'Contenu reçu ! Il sera bientôt joué !',
 
   setDefaultTimeCommand: 'config-defaut',
   setDefaultTimeCommandDescription:
@@ -74,12 +62,6 @@ export const frLang: typeof enLang = {
   setMaxTimeCommandOptionText: 'nombre',
   setMaxTimeCommandOptionTextDescription: 'Nombre de seconds',
   setMaxTimeCommandAnswer: 'Temps maximum défini !',
-
-  setDisplayMediaFullCommand: 'config-displayfull',
-  setDisplayMediaFullCommandDescription: 'Définir si les médias doivent être affichés en plein écran',
-  setDisplayMediaFullCommandOptionText: 'value',
-  setDisplayMediaFullCommandOptionTextDescription: 'Oui  / Non',
-  setDisplayMediaFullCommandAnswer: 'Valeur défini !',
 
   stopCommand: 'stop',
   stopCommandDescription: 'Supprime le média',

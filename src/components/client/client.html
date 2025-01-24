@@ -135,6 +135,10 @@
       video.attachment::-webkit-media-controls {
         display: none;
       }
+
+      .hidden {
+        display: none;
+      }
     </style>
     <div id="messages"></div>
   </body>
@@ -170,11 +174,15 @@
           attachmentHTML = `<audio class="attachment" src="${content.media}" autoplay></audio>`;
         }
 
-        messageElement.innerHTML = `
-            <div class="message-header">
+        const avatarElement = !data.hidden
+          ? `<div class="message-header">
                 <img class="avatar" src="${data.authorImage}" />
                 <strong class="username">${data.author}</strong>
-            </div>
+            </div>`
+          : '';
+
+        messageElement.innerHTML = `
+            ${avatarElement}
             <div class="content">
                 <p data-content="${content.text}">${content.text ?? ''}</p>
             </div>

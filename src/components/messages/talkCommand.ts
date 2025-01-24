@@ -18,10 +18,16 @@ export const talkCommand = () => ({
       option
         .setName(rosetty.t('talkCommandOptionText')!)
         .setDescription(rosetty.t('talkCommandOptionTextDescription')!),
+    )
+    .addBooleanOption((option) =>
+      option
+        .setName(rosetty.t('talkCommandOptionHide')!)
+        .setDescription(rosetty.t('talkCommandOptionHideDescription')!),
     ),
   handler: async (interaction: CommandInteraction) => {
     const text = interaction.options.get(rosetty.t('talkCommandOptionText')!)?.value;
     const voice = interaction.options.get(rosetty.t('talkCommandOptionVoice')!)?.value;
+    const hidden = interaction.options.get(rosetty.t('talkCommandOptionHide')!)?.value ?? false;
 
     const filePath = await promisedGtts(voice, rosetty.getCurrentLang());
 
@@ -60,6 +66,7 @@ export const talkCommand = () => ({
         ),
         author: interaction.user.username,
         authorImage: interaction.user.avatarURL(),
+        hidden,
       },
     });
   },

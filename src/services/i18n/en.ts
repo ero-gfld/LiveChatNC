@@ -31,17 +31,11 @@ export const enLang = {
   sendCommandOptionTextDescription: 'Text to display',
   sendCommandOptionMedia: 'media',
   sendCommandOptionMediaDescription: 'Media to display',
+  sendCommandOptionDuration: 'duration',
+  sendCommandOptionDurationDescription: 'Duration to display (In seconds)',
+  sendCommandOptionHide: 'hide',
+  sendCommandOptionHideDescription: 'Hide content',
   sendCommandAnswer: 'Content received ! Will be played soon !',
-
-  hideSendCommand: 'hsend',
-  hideSendCommandDescription: 'Send content to stream (but hided 😈)',
-  hideSendCommandOptionURL: 'link',
-  hideSendCommandOptionURLDescription: 'Link to the content to display',
-  hideSendCommandOptionText: 'text',
-  hideSendCommandOptionTextDescription: 'Text to display',
-  hideSendCommandOptionMedia: 'media',
-  hideSendCommandOptionMediaDescription: 'Media to display',
-  hideSendCommandAnswer: 'Content received ! Will be played soon !',
 
   talkCommand: 'talk',
   talkCommandDescription: 'Ask a bot to say something',
@@ -49,15 +43,9 @@ export const enLang = {
   talkCommandOptionTextDescription: 'Text to display',
   talkCommandOptionVoice: 'voice',
   talkCommandOptionVoiceDescription: 'Text to say',
+  talkCommandOptionHide: 'hide',
+  talkCommandOptionHideDescription: 'Hide content',
   talkCommandAnswer: 'Content received ! Will be played soon !',
-
-  hideTalkCommand: 'htalk',
-  hideTalkCommandDescription: 'Ask a bot to say something (but hided 😈)',
-  hideTalkCommandOptionText: 'text',
-  hideTalkCommandOptionTextDescription: 'Text to display',
-  hideTalkCommandOptionVoice: 'voice',
-  hideTalkCommandOptionVoiceDescription: 'Text to say',
-  hideTalkCommandAnswer: 'Content received ! Will be played soon !',
 
   setDefaultTimeCommand: 'config-defaulttime',
   setDefaultTimeCommandDescription:
@@ -71,12 +59,6 @@ export const enLang = {
   setMaxTimeCommandOptionText: 'number',
   setMaxTimeCommandOptionTextDescription: 'Number of seconds',
   setMaxTimeCommandAnswer: 'Max time set !',
-
-  setDisplayMediaFullCommand: 'config-displayfull',
-  setDisplayMediaFullCommandDescription: 'Set if media should be displayed in full screen',
-  setDisplayMediaFullCommandOptionText: 'boolean',
-  setDisplayMediaFullCommandOptionTextDescription: 'True  / False',
-  setDisplayMediaFullCommandAnswer: 'Display full set !',
 
   stopCommand: 'stop',
   stopCommandDescription: 'Remove content displayed',
