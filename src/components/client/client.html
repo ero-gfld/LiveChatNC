@@ -196,9 +196,9 @@
           paragraph.style.setProperty('--char-length', content.text?.length);
         }
 
-        if (messageElement.querySelector('video')) {
-          const videoElement = messageElement.querySelector('video');
-          videoElement.addEventListener('canplay', () => {
+        if (messageElement.querySelector('video, audio')) {
+          const videoElement = messageElement.querySelector('video, audio');
+          videoElement.addEventListener('canplaythrough', () => {
             messageElement.style.display = 'flex';
           });
         } else if (messageElement.querySelector('img')) {
@@ -224,13 +224,7 @@
         // if the message contains a video, empty the messages container after it has been played
         if (messageElement.querySelector('video, audio')) {
           const mediaElement = messageElement.querySelector('video, audio');
-          // Ensure the media can be played before setting the timeout
-          mediaElement.addEventListener('canplaythrough', () => {
-            // Make sure the media is playing
-            mediaElement.play().then(() => {
-              mediaElement.addEventListener('ended', finishMessage);
-            });
-          });
+          mediaElement.addEventListener('ended', finishMessage);
         }
 
         setTimeout(finishMessage, data.duration * 1000);
