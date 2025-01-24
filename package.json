@@ -6,14 +6,9 @@
   "scripts": {
     "dev": "pnpm migration:up && tsx ./src/index.ts | pnpm pino-pretty",
     "start": "node ./dist/src/index.js",
-    "lint": "eslint src --ext .ts --fix",
-    "prepare": "husky install",
     "generate": "prisma generate",
     "migration:up": "prisma migrate deploy",
     "migration:make": "prisma migrate dev"
-  },
-  "lint-staged": {
-    "*.ts": "eslint --fix"
   },
   "author": "qlaffont",
   "license": "ISC",
@@ -22,16 +17,7 @@
     "@commitlint/config-conventional": "18.6.2",
     "@fastify/cors": "9.0.1",
     "@types/node": "20.11.17",
-    "@typescript-eslint/eslint-plugin": "7.0.1",
-    "@typescript-eslint/parser": "7.0.1",
-    "eslint": "8.56.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-prettier": "5.1.3",
     "fastify-socket.io": "5.0.0",
-    "husky": "9.0.11",
-    "lint-staged": "15.2.2",
     "pino-pretty": "10.3.1",
     "prettier": "3.2.5",
     "tsx": "^4.7.1",
