@@ -1,5 +1,5 @@
 {
-  "name": "livechat-ccb",
+  "name": "livechat-nc",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,7 @@
     "migration:up": "prisma migrate deploy",
     "migration:make": "prisma migrate dev"
   },
-  "author": "qlaffont",
+  "author": "ero_gfld",
   "license": "ISC",
   "devDependencies": {
     "@commitlint/cli": "18.6.1",
